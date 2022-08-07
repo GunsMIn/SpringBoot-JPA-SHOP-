@@ -18,7 +18,7 @@ public class ItemRepository {
         /*save()
         id 가 없으면 신규로 보고 persist() 실행 -> id가 없다는 것은 완전히 새로 생성하는 객체
         id 가 있으면 이미 데이터베이스에 저장된 엔티티를 수정한다고 보고, merge() 를 실행 ->update랑 비슷*/
-        if(item.getId() == null){ //
+        if(item.getId() == null){
             em.persist(item);
         }else{ // 이것의 뜻은 이미 기존에 식별자가 존재한다면 준영속 엔티티로 보고
             em.merge(item);

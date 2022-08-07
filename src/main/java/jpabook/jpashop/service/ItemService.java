@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional(readOnly = true) // 조회 서비스 로직이 많을 때 이렇게 쓰면 편리하다.
 @RequiredArgsConstructor
 public class ItemService {
 
@@ -21,9 +21,10 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    //중요!!(변경 감지 기능)  수정 방법
+    //중요!!(변경 감지 기능) 수정 방법
     @Transactional          //트랜잭션이 있는 서비스 계층에 식별자( id )와 변경할 데이터를 명확하게 전달하자
     public void updateItem(Long itemId, String name , int price, int stockQuantity){
+        //28번째줄이 키포인트다 영속성컨텍스트로 뽑아와야한다. 28번째줄의 item은 영속성컨텍스트의 객체이다
         Item item = itemRepository.findOne(itemId); // 실제 영속성 컨텍스트에 있는 애를 찾은거다.
         item.setPrice(price);
         item.setName(name);

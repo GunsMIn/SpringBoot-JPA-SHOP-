@@ -44,8 +44,9 @@ class MemberServiceTest {
 
    }
 
+
    @Test
-   public void 중복_회원_검사사()throws Exception {
+   public void 중복_회원_검사사() throws Exception {
        //given
        Member member = new Member();
        member.setName("김건우");

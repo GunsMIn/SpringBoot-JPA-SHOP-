@@ -23,7 +23,7 @@ public class Order {
     @GeneratedValue
     @Column(name = "order_id")
     private Long id;
-
+    //모든 로딩은 지연로딩이 성능 상 좋다
     @ManyToOne(fetch = LAZY)//@~~~ToOne모든 연관관계는 지연로딩으로 설정/ 안그러면 쿼리장애 발생
     @JoinColumn(name ="member_id")
     private Member member;
@@ -41,17 +41,17 @@ public class Order {
     private LocalDateTime orderData;
 
     @Enumerated(EnumType.STRING)
-    private  OrderStatus status;//주문 상태 [order,cancel]
+    private OrderStatus status;//주문 상태 [order,cancel]
 
 
-    //연관관계메소드
+    //연관관계메소드 --> 연관관계를 맺은 엔티티는 2개다 값을 넣어줘야 null포인터exception이 안 생긴다.
     public void setMember(Member member){
         this.member = member;
-        member.getOrders().add(this);
+        member.getOrders().add(this); //member테이블에도 oreder를 넣어줘야하니까
     }
     public void addOrderItem(OrderItem orderItem){
         orderItems.add(orderItem);
-        orderItem.setOrder(this);
+        orderItem.setOrder(this); // oredritem 테이블에도 oreder를 넣워줘얗 하니까
     }
 
     public void setDelivery(Delivery delivery){
@@ -83,7 +83,6 @@ public class Order {
         if(delivery.getStatus()==DeliveryStatus.COMP){
             throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
         }
-
         this.setStatus(OrderStatus.CANCEL);// 주문상태를 취소로 바꿔줌
         for (OrderItem orderItem : orderItems) {
             orderItem.cancel(); // order를 취소하면 orderitem에도 취소해줘야한다

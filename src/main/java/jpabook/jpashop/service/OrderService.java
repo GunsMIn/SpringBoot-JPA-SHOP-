@@ -54,4 +54,6 @@ public class OrderService {
         return orderRepository.findAllByString(orderSearch);
     }
 
+    //fetch 조인인
+
 }

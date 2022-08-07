@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true) // 중요! jpa의 모든 데이터변경은 트랜잭션안에서 실행되어야한다.
+@Transactional(readOnly = true) // 중요! jpa의 모든 데이터변경은 트랜잭션안에서 실행되어야한다.데이터 변경이 있는 곳에서는 @Transactional이 필요하다
 @RequiredArgsConstructor // 생성자 주입
 public class MemberService {
 
@@ -41,5 +41,14 @@ public class MemberService {
     //@Transactional(readOnly = true)
     public Member findOne(Long memberId){
         return memberRepository.findOne(memberId);
+    }
+
+
+    //회원수정
+    @Transactional
+    public void update(Long id,String name){
+        Member member = memberRepository.findOne(id); // 영속성 컨텍스트 꺼내온다
+        member.setName(name);
+        //변경감지로 수정
     }
 }
