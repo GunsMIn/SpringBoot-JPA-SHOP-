@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 public class SimpleOrderQueryDto {
     private Long orderId;
-    private String name;
+    private String name;//Member 의 name
     private LocalDateTime orderDate;
     private OrderStatus orderStatus;
     private Address address;

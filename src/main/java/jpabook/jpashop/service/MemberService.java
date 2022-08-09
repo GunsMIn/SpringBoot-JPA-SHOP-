@@ -44,11 +44,11 @@ public class MemberService {
     }
 
 
-    //회원수정
+    //회원수정(변경 감지)
     @Transactional
-    public void update(Long id,String name){
+    public void update(Long id,String name){ // 식별할 수 있는 것과 바꾸는 값을 넣어준다
         Member member = memberRepository.findOne(id); // 영속성 컨텍스트 꺼내온다
-        member.setName(name);
+        member.setName(name); // 변경이 감지되면 Transactional 기간에 넣어준다
         //변경감지로 수정
     }
 }

@@ -51,7 +51,7 @@ public class OrderSimpleApiController {
     //fetch join 사용한 api 조회 방법
     @GetMapping("/api/v3/simple-order")
     public List<SimpleOrderQueryDto> orderListV3(){
-        List<Order> orders = orderRepository.findAllWithDelivery();
+        List<Order> orders = orderRepository.findAllWithDelivery(); //fetch join사용
         List<SimpleOrderQueryDto> result = orders.stream().map(o -> new SimpleOrderQueryDto(o))
                 .collect(toList());
         return result;

@@ -33,6 +33,8 @@ public class MemberApiController {
         return new Result(collect);
     }
 
+
+
     @Data
     @AllArgsConstructor
     static class Result<T>{
@@ -68,23 +70,11 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
-    //수정 API
-    @PutMapping("/api/v2/members/{id}")
-    public UpdateMemberResponse updateMemberV2(
-            @PathVariable Long id,
-            @RequestBody @Valid UpdateMemberRequest request
-    ){
-        memberService.update(id,request.getName()); // 여기서 바꿔주고
-        Member findMember = memberService.findOne(id);
-
-        return new UpdateMemberResponse(findMember.getId(),findMember.getName());
-    }
-
-
 
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////
+    //회원 등록 api 객체
     @Data
     static class CreateMemberRequest{
         @NotEmpty
@@ -100,6 +90,25 @@ public class MemberApiController {
         }
     }
 
+    //수정 API
+    @PutMapping("/api/v2/members/{id}")
+    public UpdateMemberResponse updateMemberV2(
+            @PathVariable Long id,
+            @RequestBody @Valid UpdateMemberRequest request
+    ){
+        memberService.update(id,request.getName()); // 여기서 바꿔주고
+        Member findMember = memberService.findOne(id);
+        return new UpdateMemberResponse(findMember.getId(),findMember.getName());
+    }
+
+    //나의 수정
+    @PutMapping("/api/{id}/update")
+    public UpdateMemberResponse updateUser(@RequestBody UpdateMemberRequest request, @PathVariable Long id){
+        memberService.update(id,request.getName());
+        Member one = memberService.findOne(id);
+        return new UpdateMemberResponse(one.getId(), one.getName());
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////
     @Data
     static class UpdateMemberRequest{
@@ -112,5 +121,11 @@ public class MemberApiController {
         private Long id;
         private String name;
     }
+
+
+
+
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////
 }
