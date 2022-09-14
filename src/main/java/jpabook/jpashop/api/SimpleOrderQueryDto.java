@@ -1,4 +1,4 @@
-package jpabook.jpashop.repository;
+package jpabook.jpashop.api;
 
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
@@ -7,6 +7,8 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+//@ManyTOone
+// 다 : 1 관계만 한 dto !
 @Data
 public class SimpleOrderQueryDto {
     private Long orderId;

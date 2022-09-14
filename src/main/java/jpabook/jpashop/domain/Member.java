@@ -15,7 +15,7 @@ import java.util.List;
 public class Member {
 
     @Id @GeneratedValue
-    @Column(name ="member_id")
+    @Column(name ="member_id") // @Column의 name속성은 디비의 컬러명과 자바의 필드명이 다를때 사용!
     private Long id;
 
     @NotEmpty // 무조건 값이 있어야함

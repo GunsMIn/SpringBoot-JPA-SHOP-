@@ -1,13 +1,11 @@
 package jpabook.jpashop.repository;
 
-import jpabook.jpashop.api.OrderSimpleApiController;
+import jpabook.jpashop.api.SimpleOrderQueryDto;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderSearch;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -53,6 +51,27 @@ public class OrderRepository {
                         "join o.member m " +
                         "join o.delivery d", SimpleOrderQueryDto.class
         ).getResultList();
+    }
+
+
+
+    //중요!! 결과적으로 1 : 다 fetch join에서는 페이징을 하면 안된다
+    public  List<Order> findAllWithItem(){
+        return em.createQuery(
+                //디비에서 distinct를 사용 할 수 있지만 여기서 해주면
+                // 객체의 id가 중복이된다면 중복을 제거해준다.
+                "select distinct o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d " +
+                        "join fetch  o.orderItems oi " +
+                        "join fetch oi.item i ", Order.class
+        )
+                .setFirstResult(1)
+                .setMaxResults(100) /*몇 번째 부터 몇 개 가져와/ /*여기서는 페이징 못한다.*/
+                .getResultList();
+                //중요!! 결과적으로 1 : 다 fetch join에서는 페이징을 하면 안된다
+                //중요!! 컬렉션 fetch join은 1개만 사용하자 2개이상은 비 추천
+
     }
 
 

@@ -18,7 +18,7 @@ import static javax.persistence.FetchType.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Order { // 연관관계의 주인 : foregin Key를 담당(insert,update)할 수 있는 테이블,엔티티
 
     @Id
     @GeneratedValue
@@ -27,7 +27,7 @@ public class Order {
     //모든 로딩은 지연로딩이 성능 상 좋다\
     @JsonIgnore
     @ManyToOne(fetch = LAZY)//@~~~ToOne모든 연관관계는 지연로딩으로 설정/ 안그러면 쿼리장애 발생
-    @JoinColumn(name ="member_id")
+    @JoinColumn(name ="member_id") // 외래키가 있는 곳이 주인
     private Member member;
 
     //cascade의 경우에는 프라이빗오너의 입장에서 생각하면 쉬워진다.
@@ -42,7 +42,7 @@ public class Order {
     private Delivery delivery;
 
 
-    private LocalDateTime orderData;
+    private LocalDateTime orderData;//주문 시간
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;//주문 상태 [order,cancel]

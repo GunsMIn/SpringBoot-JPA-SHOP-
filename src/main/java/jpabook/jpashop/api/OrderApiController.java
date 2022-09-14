@@ -33,15 +33,22 @@ public class OrderApiController {
 
 
 
-
-
     @GetMapping("/api/v2/orders")
     public List<OrderDTO> orderV2(){
-        List<Order> orders = orderRepository.findAllByString(new OrderSearch());
+        List<Order> orders = orderRepository.findAll();
         List<OrderDTO> collect = orders.stream().map(o -> new OrderDTO(o))
                 .collect(Collectors.toList());
         return collect;
     }
+
+    @GetMapping("/api/v3/orders")
+    public List<OrderDTO> orderV3(){
+        List<Order> allWithItem = orderRepository.findAllWithItem();
+        List<OrderDTO> collect = allWithItem.stream().map(o -> new OrderDTO(o))
+                .collect(Collectors.toList());
+        return collect;
+    }
+
 
     @Data
     @AllArgsConstructor
