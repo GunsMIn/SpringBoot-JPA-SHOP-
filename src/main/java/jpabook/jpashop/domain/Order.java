@@ -20,6 +20,7 @@ import static javax.persistence.FetchType.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order { // 연관관계의 주인 : foregin Key를 담당(insert,update)할 수 있는 테이블,엔티티
 
+
     @Id
     @GeneratedValue
     @Column(name = "order_id")
@@ -37,9 +38,10 @@ public class Order { // 연관관계의 주인 : foregin Key를 담당(insert,up
     private List<OrderItem> orderItems = new ArrayList<>();   // order만 persist하면 orderItems까지 persist된다!
 
     @JsonIgnore
-    @OneToOne(fetch = LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = LAZY,cascade = CascadeType.ALL) //delivery에 값만 넣어주고 order를 persist를 해주면 같이 persist된다
     @JoinColumn(name="delivery_id") // 일대일 매핑에서의 연간관계 주인으로 지정
     private Delivery delivery;
+    //Order를 보면서 delivery를 본다고 생각한다. 그래서 연관관계의 주인을 Order에 주었다
 
 
     private LocalDateTime orderData;//주문 시간
@@ -48,16 +50,14 @@ public class Order { // 연관관계의 주인 : foregin Key를 담당(insert,up
     private OrderStatus status;//주문 상태 [order,cancel]
 
 
-
-
-
-    //연관관계메소드 --> 연관관계를 맺은 엔티티는 2개다 값을 넣어줘야 null포인터exception이 안 생긴다.
+    //연관관계편의메소드를 가지고 있어야 할 곳은 핵심적으로 컨트롤 할 수 있는 곳이 좋다
+    //연관관계 편의 메소드 --> 연관관계를 맺은 엔티티는 2개다 값을 넣어줘야 null포인터exception이 안 생긴다.
     public void setMember(Member member){
         this.member = member;
         member.getOrders().add(this); //member테이블에도 oreder를 넣어줘야하니까
     }
     public void addOrderItem(OrderItem orderItem){
-        orderItems.add(orderItem);
+        this.orderItems.add(orderItem);
         orderItem.setOrder(this); // oredritem 테이블에도 oreder를 넣워줘얗 하니까
     }
 

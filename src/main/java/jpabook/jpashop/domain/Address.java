@@ -5,7 +5,7 @@ import lombok.Getter;
 import javax.persistence.Embeddable;
 
 @Embeddable//어딘가에 내장 될 수 있다라는 어노테이션
-@Getter  // 값 타입은 값이 변경되는것은 추천하지 않는다!
+@Getter  // 값 타입은 값이 변경되는것은 추천하지 않는다! //그래서 값타입은 setter를 안만드러주는게 좋다.
 public class Address {
 
     private String city;

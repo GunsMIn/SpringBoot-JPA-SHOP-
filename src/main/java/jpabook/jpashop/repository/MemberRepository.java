@@ -26,7 +26,7 @@ public class MemberRepository {
 
     //디비 회원 조회 로직
     public  Member findOne(Long id){
-        return em.find(Member.class,id);
+        return em.find(Member.class,id); // em.find(타입,pk)
     }
     //회원 목록 조회
     public List<Member> findAll(){
