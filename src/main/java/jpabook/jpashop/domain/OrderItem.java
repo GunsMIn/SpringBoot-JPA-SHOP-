@@ -54,6 +54,7 @@ public class OrderItem {
         getItem().addStock(count); //재고 수량을 원복해준다.
     }
 
+
     //조회로직
     //주문상품가격조회
     public int getTotalPrice() {

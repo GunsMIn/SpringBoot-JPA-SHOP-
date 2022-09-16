@@ -1,3 +1,4 @@
+/*
 package jpabook.jpashop.service;
 
 import com.sun.xml.bind.v2.schemagen.xmlschema.AttrDecls;
@@ -66,4 +67,4 @@ class MemberServiceTest {
 
 
 
-}
+}*/

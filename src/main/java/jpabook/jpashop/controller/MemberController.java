@@ -22,6 +22,7 @@ public class MemberController {
 
     @GetMapping("/members/new")
     public String createForm(Model model){
+                            //@ModelAttribute MemberForm memberform
 
         model.addAttribute("memberForm",new MemberForm());
         return "members/createMemberForm";
@@ -35,6 +36,13 @@ public class MemberController {
             return "members/createMemberForm"; // 다시 돌려보내서 에러타임리프를 만나게되겠다
         }
 
+        //글로벌 오류
+        if(form.getCity().isEmpty() ||form.getStreet().isEmpty() || form.getZipcode().isEmpty()){
+            result.reject("AddressFail","집주소를 정확하게 입력해주세요");
+            return "members/createMemberForm";
+        }
+
+        //입베디드 값 타입에 넣어 주었다
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
         Member member = new Member();
@@ -42,7 +50,7 @@ public class MemberController {
         member.setAddress(address);
         memberService.join(member);
 
-        return "redirect:/";
+        return "redirect:/"; // 리다이렉트로 홈화면에
     }
 
 

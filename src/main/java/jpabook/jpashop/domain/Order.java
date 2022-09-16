@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.*;
 @Table(name="orders")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // 다른 곳에서 생성자로 값을 못 넣게 하려고
 public class Order { // 연관관계의 주인 : foregin Key를 담당(insert,update)할 수 있는 테이블,엔티티
 
 
@@ -42,7 +42,6 @@ public class Order { // 연관관계의 주인 : foregin Key를 담당(insert,up
     @JoinColumn(name="delivery_id") // 일대일 매핑에서의 연간관계 주인으로 지정
     private Delivery delivery;
     //Order를 보면서 delivery를 본다고 생각한다. 그래서 연관관계의 주인을 Order에 주었다
-
 
     private LocalDateTime orderData;//주문 시간
 
@@ -84,6 +83,7 @@ public class Order { // 연관관계의 주인 : foregin Key를 담당(insert,up
     //==비지니스 로직==//
     /*
     * 주문 취소
+    * 상품(item)의 stockQuantity를 다시 +1 늘려줘야한다
     * */
     public void cancel(){
         //만약 상품이 도착했다면 주문취소가 안된다

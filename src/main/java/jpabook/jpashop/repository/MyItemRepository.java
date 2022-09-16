@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 @Slf4j
@@ -24,5 +25,16 @@ public class MyItemRepository {
         }else{
             em.merge(item);
         }
+    }
+
+    //단건 조회
+    public Item findOne(Item item) {
+        return em.find(Item.class, item.getId());
+    }
+
+    //전체 조회
+    public List<Item> findAll() {
+        return em.createQuery("select i from Item i", Item.class)
+                .getResultList();
     }
 }

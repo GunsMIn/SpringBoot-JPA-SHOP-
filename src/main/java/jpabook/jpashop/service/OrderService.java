@@ -43,6 +43,7 @@ public class OrderService {
     //주문취소
     @Transactional
     public void cancelOrder(Long orderId){
+        //엔티티 조회
         Order order = orderRepository.findOne(orderId);
         order.cancel();
     }
