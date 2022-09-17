@@ -17,6 +17,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class OrderController {
+
     private final OrderService orderService;
     private final MemberService memberService;
     private final ItemService itemService;
@@ -34,7 +35,6 @@ public class OrderController {
     public String order(@RequestParam("memberId") Long memberId,
                         @RequestParam("itemId") Long itemId,
                         @RequestParam("count") int count){
-
         orderService.order(memberId, itemId, count);
         return "redirect:/orders";
     }

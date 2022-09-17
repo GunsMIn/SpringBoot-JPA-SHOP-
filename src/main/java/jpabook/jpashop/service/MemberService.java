@@ -27,7 +27,7 @@ public class MemberService {
     private void validateDuplicateMember(Member member)  {
         //중복회원이 있다면 Exception터트릴려고
         List<Member> findMembers = memberRepository.findByName(member.getName());
-        if(!findMembers.isEmpty()){
+        if(!findMembers.isEmpty()){ // 비어있어야 중복이름이 없는 것이다.
             throw new IllegalStateException("이미 존재하는 회원입니다");
         }
     }
@@ -47,6 +47,7 @@ public class MemberService {
     //회원수정(변경 감지)
     @Transactional
     public void update(Long id,String name){ // 식별할 수 있는 것과 바꾸는 값을 넣어준다
+        //준영속 상태였던 엔티티를 영속엔티티로 바꿔주기위해서는 찾아와야한다
         Member member = memberRepository.findOne(id); // 영속성 컨텍스트 꺼내온다
         member.setName(name); // 변경이 감지되면 Transactional 기간에 넣어준다
         //변경감지로 수정
