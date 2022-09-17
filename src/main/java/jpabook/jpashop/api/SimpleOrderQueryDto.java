@@ -15,7 +15,7 @@ public class SimpleOrderQueryDto {
     private String name;//Member 의 name
     private LocalDateTime orderDate;
     private OrderStatus orderStatus;
-    private Address address;
+    private Address address; // Delivery에 있는 address의 값타입
 
     public SimpleOrderQueryDto(Order order){
         orderId = order.getId();

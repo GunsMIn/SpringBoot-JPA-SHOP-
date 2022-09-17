@@ -52,4 +52,7 @@ public class MemberService {
         member.setName(name); // 변경이 감지되면 Transactional 기간에 넣어준다
         //변경감지로 수정
     }
+
+
+
 }

@@ -26,18 +26,20 @@ public class Order { // 연관관계의 주인 : foregin Key를 담당(insert,up
     @Column(name = "order_id")
     private Long id;
     //모든 로딩은 지연로딩이 성능 상 좋다\
-    @JsonIgnore
+
+    // Member클래스를 보면 @JSONignore를 해주었다
+    //한쪽만 해주어도 된다.
     @ManyToOne(fetch = LAZY)//@~~~ToOne모든 연관관계는 지연로딩으로 설정/ 안그러면 쿼리장애 발생
     @JoinColumn(name ="member_id") // 외래키가 있는 곳이 주인
     private Member member;
 
     //cascade의 경우에는 프라이빗오너의 입장에서 생각하면 쉬워진다.
     //OrderItem / Delivery는 order에서만 쓴다.???
-    @JsonIgnore
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) //원래같은면 persist를 각각해줘야하는데 cascade = CascadeType.ALL를쓰면
     private List<OrderItem> orderItems = new ArrayList<>();   // order만 persist하면 orderItems까지 persist된다!
 
-    @JsonIgnore
+
     @OneToOne(fetch = LAZY,cascade = CascadeType.ALL) //delivery에 값만 넣어주고 order를 persist를 해주면 같이 persist된다
     @JoinColumn(name="delivery_id") // 일대일 매핑에서의 연간관계 주인으로 지정
     private Delivery delivery;

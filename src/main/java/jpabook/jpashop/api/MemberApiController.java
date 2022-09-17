@@ -22,23 +22,28 @@ public class MemberApiController {
 
     @GetMapping("/api/v1/members")
     public List<Member> membersV1(){
+
         return memberService.findMembers();
+        //이렇게 제작시에 Member는 Order와 연관관계과 되어있기때문데
+        //@JsonIgnore을 사용해서 api응답시 제외시켜주었다(비추천)
     }
 
     @GetMapping("/api/v2/members")
-    public Result memversV2(){
+    public Result membersV2(){
         List<Member> members = memberService.findMembers();
-        List<MemberDto> collect = members.stream().map(m -> new MemberDto(m.getName()))
+        List<MemberDto> memberDtoList = members.stream().map(m -> new MemberDto(m.getName()))
                 .collect(Collectors.toList());
-        return new Result(collect);
+        return new Result(memberDtoList,memberDtoList.size());
     }
 
 
-
+    ///////////조회 DTO////////////
+    //장점 : 내가 노출하고싶은것만 노출 시킬 수 있다.
     @Data
     @AllArgsConstructor
     static class Result<T>{
         private T data;
+        private int count;
     }
 
     @Data
@@ -46,6 +51,7 @@ public class MemberApiController {
     static class MemberDto{
         private String name;
     }
+    ///////////////////////////////
 
     //회원 등록 api
     @PostMapping("/api/v1/members")
@@ -71,8 +77,6 @@ public class MemberApiController {
     }
 
 
-
-
     /////////////////////////////////////////////////////////////////////////////////////////////
     //회원 등록 api 객체
     @Data
@@ -96,7 +100,7 @@ public class MemberApiController {
             @PathVariable Long id,
             @RequestBody @Valid UpdateMemberRequest request
     ){
-        memberService.update(id,request.getName()); // 여기서 바꿔주고
+        memberService.update(id,request.getName()); // 여기서 이미 영속성 컨텍스트에있는 엔티티를 바꿔줌
         Member findMember = memberService.findOne(id);
         return new UpdateMemberResponse(findMember.getId(),findMember.getName());
     }
