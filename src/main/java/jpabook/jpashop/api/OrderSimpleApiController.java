@@ -41,18 +41,18 @@ public class OrderSimpleApiController {
     }
 
     @GetMapping("/api/v2/simple-order")
-    public List<SimpleOrderQueryDto> orderListV2(){
+    public List<SimpleOrderDto> orderListV2(){
         List<Order> orders = orderRepository.findAll();
-        List<SimpleOrderQueryDto> orderDtoList = orders.stream().map(o -> new SimpleOrderQueryDto(o))
+        List<SimpleOrderDto> orderDtoList = orders.stream().map(o -> new SimpleOrderDto(o))
                 .collect(toList());
         return orderDtoList;
     }
 
     //fetch join 사용한 api 조회 방법
     @GetMapping("/api/v3/simple-order")
-    public List<SimpleOrderQueryDto> orderListV3(){
+    public List<SimpleOrderDto> orderListV3(){
         List<Order> orders = orderRepository.findAllWithDelivery(); //fetch join사용
-        List<SimpleOrderQueryDto> result = orders.stream().map(o -> new SimpleOrderQueryDto(o))
+        List<SimpleOrderDto> result = orders.stream().map(o -> new SimpleOrderDto(o))
                 .collect(toList());
         return result;
     }
@@ -60,7 +60,8 @@ public class OrderSimpleApiController {
 
     @GetMapping("/api/v4/simple-order")
     public List<SimpleOrderQueryDto> orderListV4(){
-        return orderRepository.findOrderDTO();
+        return orderRepository.findOrderDTO();//
+        //
     }
 
 

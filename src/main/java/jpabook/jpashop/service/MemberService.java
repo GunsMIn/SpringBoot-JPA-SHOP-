@@ -53,6 +53,12 @@ public class MemberService {
         //변경감지로 수정
     }
 
+    @Transactional
+    public void updateV2(Long id, String name) {
+        Member one = memberRepository.findOne(id);
+        one.setName(name);
+    }
+
 
 
 }

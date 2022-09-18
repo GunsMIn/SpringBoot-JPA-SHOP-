@@ -17,12 +17,12 @@ public class SimpleOrderQueryDto {
     private OrderStatus orderStatus;
     private Address address; // Delivery에 있는 address의 값타입
 
-    public SimpleOrderQueryDto(Order order){
-        orderId = order.getId();
-        name = order.getMember().getName();
-        orderDate = order.getOrderData();
-        orderStatus = order.getStatus();
-        address = order.getDelivery().getAddress();
+    public SimpleOrderQueryDto(Long orderId,String name,LocalDateTime orderDate,OrderStatus orderStatus,Address address){
+        this.orderId = orderId;
+        this.name = name;
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+        this.address = address;
     }
 
 }

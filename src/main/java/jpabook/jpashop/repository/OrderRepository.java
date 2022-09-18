@@ -46,8 +46,9 @@ public class OrderRepository {
 
 
     public List<SimpleOrderQueryDto> findOrderDTO() {
-        return em.createQuery(
-                "select o from Order o " +
+        return em.createQuery(   //생성자에 엔티티를 그냥 넘겨버리면 식별자로 알기 때문에 밑작업을 해준다
+                "select new jpabook.jpashop.api.SimpleOrderQueryDto(o.id,m.name,o.orderData,o.status,d.address) " +
+                        "from Order o " +
                         "join o.member m " +
                         "join o.delivery d", SimpleOrderQueryDto.class
         ).getResultList();
@@ -58,14 +59,14 @@ public class OrderRepository {
     //중요!! 결과적으로 1 : 다 fetch join에서는 페이징을 하면 안된다
     public  List<Order> findAllWithItem(){
         return em.createQuery(
+                //식별자가 중복이 될수도있다.
                 //디비에서 distinct를 사용 할 수 있지만 여기서 해주면
-                // 객체의 id가 중복이된다면 중복을 제거해준다.
+                //객체의 식별자id만이라도 중복이된다면 중복을 제거해준다. 여기서는 orderId
                 "select distinct o from Order o " +
                         "join fetch o.member m " +
                         "join fetch o.delivery d " +
                         "join fetch  o.orderItems oi " +
-                        "join fetch oi.item i ", Order.class
-        )
+                        "join fetch oi.item i ", Order.class)
                 .setFirstResult(1)
                 .setMaxResults(100) /*몇 번째 부터 몇 개 가져와/ /*여기서는 페이징 못한다.*/
                 .getResultList();

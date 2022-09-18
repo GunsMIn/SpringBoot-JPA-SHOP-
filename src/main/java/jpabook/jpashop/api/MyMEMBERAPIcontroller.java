@@ -7,6 +7,7 @@ import jpabook.jpashop.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,93 +19,79 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MyMEMBERAPIcontroller {
 
+
     private final MemberService memberService;
 
+    @PostMapping("/api/members")
+    public CreateMemverResponse createMemver(@RequestBody CreateMemver memver) {
 
-    @GetMapping("/Myapi/v1/members")
-    public List<Member> memberList() {
-        List<Member> members = memberService.findMembers();
-        return members;
+        Member member = new Member();
+
+        member.setName(memver.getName());
+
+        Long id = memberService.join(member);
+
+        return new CreateMemverResponse(member.getName(), member.getId());
+
     }
 
 
-    @GetMapping("/Myapi/v2/members")
-    public Result memberListV2(){
+    @Data
+    static class CreateMemver{
+        private String name;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class CreateMemverResponse{
+        private String name;
+        private Long id;
+
+    }
+
+
+    @PatchMapping("/api/memvers/{id}/update")
+    public UpdateMemversResponse update(@PathVariable Long id, @RequestBody UpdateMemverRequest request) {
+
+        memberService.updateV2(id,request.getName());
+        Member one = memberService.findOne(id);
+        return new UpdateMemversResponse(one.getId(), one.getName());
+    }
+
+    @Data
+    static class UpdateMemverRequest{
+       private  String name;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateMemversResponse{
+        private Long id;
+        private String name;
+    }
+
+
+
+    @GetMapping("/api/memversList")
+    public Result getList() {
         List<Member> members = memberService.findMembers();
-        List<MemberDto> MemberDtoList = members.stream().map(m -> new MemberDto(m.getName()))
+        List<MemberListResponse> memberDtos = members.stream().map(m -> new MemberListResponse(m.getName()))
                 .collect(Collectors.toList());
-        return new Result(MemberDtoList);
+
+        return new Result(memberDtos,memberDtos.size());
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class MemberListResponse{
+        private String name;
     }
 
     @Data
     @AllArgsConstructor
     static class Result<T>{
         private T data;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class MemberDto{
-        private String name; // 이름만 뽑아오기위해서
-    }
-
-
-    //등록 api
-    @PostMapping("/Myapi/v1/members")
-    public CreateMemberResponse saveMember(@Valid @RequestBody Member member, BindingResult result) {
-
-        Long id = memberService.join(member);
-        return new CreateMemberResponse(id);
-    }
-
-    @Data
-    static class CreateMemberRequest{
-        private String name;
-    }
-
-
-    @Data
-    static class CreateMemberResponse{
-        private Long id;
-
-        public CreateMemberResponse(Long id) {
-            this.id = id;
-        }
-    }
-
-
-    //등록 api
-    @PostMapping("/Myapi/v2/members")
-    public CreateMemberResponse saveMemberV2(@Valid @RequestBody CreateMemberRequest request) {
-
-        Member member = new Member();
-        member.setName(request.getName());
-        Long id = memberService.join(member);
-
-        return new CreateMemberResponse(id);
-    }
-
-
-    @PutMapping("/Myapi/v1/members/{id}")
-    public UpdateResponse update(@RequestBody UpdateRequest request, @PathVariable Long id) {
-        memberService.update(id,request.getName());
-        //여기서 이미 바뀜
-        Member member =  memberService.findOne(id);
-        return new UpdateResponse(member.getName(),member.getId());
-    }
-
-
-    @Data
-    static class UpdateRequest{
-        private String name;
-    }
-
-
-    @Data
-    @AllArgsConstructor
-    static class UpdateResponse{
-        private String name;
-        private Long id;
+        private int count;
     }
 
 }
