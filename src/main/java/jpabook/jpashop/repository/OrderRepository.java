@@ -6,6 +6,7 @@ import jpabook.jpashop.domain.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -32,10 +33,9 @@ public class OrderRepository {
                 .getResultList();
     }
 
-    //fetch 조인
+    //fetch 조인 1
     //이 경우에는 Lazy로 되어있어도 이메소드는 진짜 객체의 값을 다가져와준다!
     public List<Order> findAllWithDelivery() {
-
         return em.createQuery(
                 "select o from Order o " +
                         "join fetch o.member m " +
@@ -52,6 +52,17 @@ public class OrderRepository {
                         "join o.member m " +
                         "join o.delivery d", SimpleOrderQueryDto.class
         ).getResultList();
+    }
+
+
+    public List<Order> findAllWithMemberDelivery(int offset,int limit) {
+        return em.createQuery(
+                "select o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
     }
 
 
