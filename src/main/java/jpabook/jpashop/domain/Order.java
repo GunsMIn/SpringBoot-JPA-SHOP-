@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -36,6 +37,8 @@ public class Order { // 연관관계의 주인 : foregin Key를 담당(insert,up
     //cascade의 경우에는 프라이빗오너의 입장에서 생각하면 쉬워진다.
     //OrderItem / Delivery는 order에서만 쓴다.???
 
+    //api 페이징 처리시 컬렉션에서 페이징처리 안되는 문제 해결
+    @BatchSize(size = 1000)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) //원래같은면 persist를 각각해줘야하는데 cascade = CascadeType.ALL를쓰면
     private List<OrderItem> orderItems = new ArrayList<>();   // order만 persist하면 orderItems까지 persist된다!
 

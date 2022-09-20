@@ -53,8 +53,10 @@ public class OrderApiController {
             @RequestParam(value = "offset",defaultValue = "0") int offset,
             @RequestParam(value ="limit",defaultValue = "100") int limit
     ) {
-        //default_batch_fetch_size: 100 orders와 관련된 컬렉션을 미리 인쿼리를 100개 땡겨온다.
+        //!! 중요 !! toOne관계는 다 fetch join으로 잡고
+        // default_batch_fetch_size: 100 orders와 관련된 컬렉션을 미리 인쿼리를 100개 땡겨온다.
         // 1:n:m 관계를 1:1:1관계로 가져올 수 있다.
+        // 디테잂하게 적용하고 싶으면 @BathSize(size =100) 해주면 된다
         List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
 
         List<OrderDTO> collect = orders.stream().map(o -> new OrderDTO(o))

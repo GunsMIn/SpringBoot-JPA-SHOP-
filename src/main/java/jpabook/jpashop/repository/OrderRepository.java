@@ -55,13 +55,14 @@ public class OrderRepository {
     }
 
 
+    //다 대 1 관계는 그냥 fetch join
     public List<Order> findAllWithMemberDelivery(int offset,int limit) {
         return em.createQuery(
                 "select o from Order o " +
                         "join fetch o.member m " +
                         "join fetch o.delivery d", Order.class)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
+                .setFirstResult(offset) // 몇번째부터
+                .setMaxResults(limit)   // 개수
                 .getResultList();
     }
 
