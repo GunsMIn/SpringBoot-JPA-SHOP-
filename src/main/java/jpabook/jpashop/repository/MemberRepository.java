@@ -36,9 +36,20 @@ public class MemberRepository {
     }
 
     //이름으로 회원 목록 조회
-    public List<Member> findByName(String name){
+    public List<Member> findByName(String name) {
+
+        return em.createQuery("select m from Member m where m.name = :name", Member.class)
+                .setParameter("name", name)
+                .getResultList();
+
+
+    }
+
+
+
+    /*public List<Member> findByName(String name){
       return  em.createQuery("select m from Member m where m.name = :name", Member.class)
                 .setParameter("name", name)
                 .getResultList();
-    }
+    }*/
 }

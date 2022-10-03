@@ -69,6 +69,7 @@ public class MemberApiController {
     @PostMapping("/api/v2/members")
     public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request){
                                                                 //별도의 객체를 만들어준다
+        //큰 깨달음!!!!!!!!!!!!!! dto를 직접만들어서 해당하는 필드의 값을 Member에 다시 넣어주자!
         //request가 바로  memberService.join() 못들어가니까
         Member member = new Member();
         member.setName(request.getName());
