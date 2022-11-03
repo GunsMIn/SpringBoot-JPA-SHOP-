@@ -40,13 +40,28 @@ update 쿼리가 필요없이 알아서 수정해준다. merger는 되도록이�
 
 <b>- api 개발 :</b><br>
 1.기존의 엔티티와 api에서 사용되는 엔티티는 철저하게 분리해준다 <br> 
-api를 개발을 완성하고 기존의 엔티티를 약간이라도 변경한다면 유지보수가 굉장히 힘들다. 반드시 엔티티를 새로만들어서 개밯하자!<br> 
+api를 개발을 완성하고 기존의 엔티티를 약간이라도 변경한다면 유지보수가 굉장히 힘들다. 반드시 엔티티를 새로만들어서 개발하자!<br> 
 2.fetch join을 사용하여 엔티티안에 연관관계를 함께 조회할 수 있다.<br>
 다만 주의해야 할 점은 @xxxToMany의 관계에서는 컬렉션을 조회할 때는 그 컬렉션의 엔티티또한 DTO로 변환해준다.<br>
 3.컬렉션관계가 있는 엔티티를 조회할 때 페이징처리가 안되는 이슈 해결책!<br>
 xxxToOne관계는 전부다 fetch join을 해주고 xxxToMany관계는 default_batch_fetch_size =? 를 사용해준다.<br>
 이 옵션을 사용하면 컬렉션이나, 프록시 객체를 한꺼번에 설정한 size 만큼 IN 쿼리로 조회한다. 즉 페이징처리가 가능해진다
 
+## 등록(@PostMapping 시 기존 엔티티와 분리)
+
+![image](https://user-images.githubusercontent.com/104709432/199659304-a9d37c3b-4377-4cb8-ab8c-7ad3019b2752.png)
+<summary>CreateMemberRequest 를 Member 엔티티 대신에 RequestBody와 매핑한다.</summary>
+<summary><summary><summary>엔티티와 프레젠테이션 계층을 위한 로직을 분리할 수 있다.</summary>
+<summary><summary>엔티티와 API 스펙을 명확하게 분리할 수 있다.</summary>
+<summary>엔티티가 변해도 API 스펙이 변하지 않는다</summary>
+
+## 수정(@PatchMapping,@PutMapping 시 기존 엔티티와 분리)
+![image](https://user-images.githubusercontent.com/104709432/199659432-a05c5ed9-5ea4-4216-adde-7a94111d107f.png)
+<summary>UpdateMemberRequest 를 Member 엔티티 대신에 RequestBody와 매핑한다.</summary>
+<summary><summary>엔티티와 API 스펙을 명확하게 분리할 수 있다.</summary>
+<summary>memberService.updateMember(id,updateMemberRequest)는 service단에서 dirty checking -> 변경감지 기법을 사용</summary>
+
+<br><br>
 <b>🎈학습에 대하여 느낌점</b><br>
 jpa의 동작 방식에 대하여 알게되었다. 그리고 매핑의 종류와 각각의 매핑에대하여 더 상세하게 알게되었고<br>
 줄 곧 myBatis로 프로젝트를 해온 나에게는 jpa란 정말 편리한 것 같다.<br>
